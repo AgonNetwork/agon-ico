@@ -2,7 +2,7 @@ pragma solidity ^0.4.18;
 
 
 import "../ownership/Ownable.sol";
-import '../math/SafeMath.sol';
+import "../math/SafeMath.sol";
 
 /**
  * @title Pausable
@@ -18,8 +18,8 @@ contract Pausable is Ownable {
     address public crowdsale;
 
     /*
-    * @dev Freezing certain number of tokens bought during bonus.
-    */
+     * @dev Freezing certain number of tokens bought during bonus.
+     */
     mapping (address => uint256) public frozen;
     uint public unfreezeTimestamp;
 
@@ -89,7 +89,7 @@ contract Pausable is Ownable {
     function pause() onlyOwner whenNotPaused public {
         require(msg.sender != address(0));
         paused = true;
-        Pause();
+        emit Pause();
     }
 
     /**
@@ -98,6 +98,6 @@ contract Pausable is Ownable {
     function unpause() onlyOwner whenPaused public {
         require(msg.sender != address(0));
         paused = false;
-        Unpause();
+        emit Unpause();
     }
 }

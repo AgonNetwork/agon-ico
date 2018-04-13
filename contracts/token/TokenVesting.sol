@@ -32,14 +32,14 @@ contract TokenVesting is Ownable {
     mapping (address => bool) public revoked;
 
     /**
-    * @dev Creates a vesting contract that vests its balance of any ERC20 token to the
-    * _beneficiary, gradually in a linear fashion until _start + _duration. By then all
-    * of the balance will have vested.
-    * @param _beneficiary address of the beneficiary to whom vested tokens are transferred
-    * @param _cliff duration in seconds of the cliff in which tokens will begin to vest
-    * @param _duration duration in seconds of the period in which the tokens will vest
-    * @param _revocable whether the vesting is revocable or not
-    */
+     * @dev Creates a vesting contract that vests its balance of any ERC20 token to the
+     * _beneficiary, gradually in a linear fashion until _start + _duration. By then all
+     * of the balance will have vested.
+     * @param _beneficiary address of the beneficiary to whom vested tokens are transferred
+     * @param _cliff duration in seconds of the cliff in which tokens will begin to vest
+     * @param _duration duration in seconds of the period in which the tokens will vest
+     * @param _revocable whether the vesting is revocable or not
+     */
     function TokenVesting(address _beneficiary, uint256 _start, uint256 _cliff, uint256 _duration, bool _revocable) public {
         require(_beneficiary != address(0));
         require(_cliff <= _duration);
@@ -52,9 +52,9 @@ contract TokenVesting is Ownable {
     }
 
     /**
-    * @notice Transfers vested tokens to beneficiary.
-    * @param token ERC20 token which is being vested
-    */
+     * @notice Transfers vested tokens to beneficiary.
+     * @param token ERC20 token which is being vested
+     */
     function release(ERC20Basic token) public {
         uint256 unreleased = releasableAmount(token);
 
@@ -64,14 +64,14 @@ contract TokenVesting is Ownable {
 
         token.safeTransfer(beneficiary, unreleased);
 
-        Released(unreleased);
+        emit Released(unreleased);
     }
 
     /**
-    * @notice Allows the owner to revoke the vesting. Tokens already vested
-    * remain in the contract, the rest are returned to the owner.
-    * @param token ERC20 token which is being vested
-    */
+     * @notice Allows the owner to revoke the vesting. Tokens already vested
+     * remain in the contract, the rest are returned to the owner.
+     * @param token ERC20 token which is being vested
+     */
     function revoke(ERC20Basic token) public onlyOwner {
         require(revocable);
         require(!revoked[token]);
@@ -85,31 +85,31 @@ contract TokenVesting is Ownable {
 
         token.safeTransfer(owner, refund);
 
-        Revoked();
+        emit Revoked();
     }
 
     /**
-    * @dev Calculates the amount that has already vested but hasn't been released yet.
-    * @param token ERC20 token which is being vested
-    */
+     * @dev Calculates the amount that has already vested but hasn't been released yet.
+     * @param token ERC20 token which is being vested
+     */
     function releasableAmount(ERC20Basic token) public view returns (uint256) {
         return vestedAmount(token).sub(released[token]);
     }
 
     /**
-    * @dev Calculates the amount that has already vested.
-    * @param token ERC20 token which is being vested
-    */
+     * @dev Calculates the amount that has already vested.
+     * @param token ERC20 token which is being vested
+     */
     function vestedAmount(ERC20Basic token) public view returns (uint256) {
         uint256 currentBalance = token.balanceOf(this);
         uint256 totalBalance = currentBalance.add(released[token]);
 
         if (now < cliff) {
-        return 0;
+            return 0;
         } else if (now >= start.add(duration) || revoked[token]) {
-        return totalBalance;
+            return totalBalance;
         } else {
-        return totalBalance.mul(now.sub(start)).div(duration);
+            return totalBalance.mul(now.sub(start)).div(duration);
         }
     }
 }
