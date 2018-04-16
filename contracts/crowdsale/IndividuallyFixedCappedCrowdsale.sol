@@ -2,14 +2,13 @@ pragma solidity ^0.4.21;
 
 import "./StandardTokenCrowdsale.sol";
 import "../math/SafeMath.sol";
-import "../ownership/Ownable.sol";
 
 /**
  * @title IndividuallyFixedCappedCrowdsale
  * @dev Crowdsale with a fixed per-user caps. IndividuallyFixedCappedCrowdsale is developed based on
  * OpenZeppelin's IndividuallyCappedCrowdsale.
  */
-contract IndividuallyFixedCappedCrowdsale is StandardTokenCrowdsale, Ownable {
+contract IndividuallyFixedCappedCrowdsale is StandardTokenCrowdsale {
     using SafeMath for uint256;
 
     mapping(address => uint256) public contributions;
