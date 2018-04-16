@@ -3,6 +3,8 @@ pragma solidity ^0.4.18;
 import "./AgonToken.sol";
 import "./crowdsale/CappedCrowdsale.sol";
 import "./crowdsale/IndividuallyFixedCappedCrowdsale.sol";
+import "./crowdsale/RefundableCrowdsale.sol";
+import "./crowdsale/StandardTokenCrowdsale.sol";
 import "./ownership/Ownable.sol";
 
 /**
@@ -10,7 +12,7 @@ import "./ownership/Ownable.sol";
  * @dev Crowdsale with a fixed per-user caps. IndividuallyFixedCappedCrowdsale is developed based on
  * OpenZeppelin's IndividuallyCappedCrowdsale and Request Network's RequestTokenSale
  */
-contract AgonTokenCrowdSale is Ownable, CappedCrowdsale, IndividuallyFixedCappedCrowdsale {
+contract AgonTokenCrowdSale is Ownable, StandardTokenCrowdsale, RefundableCrowdsale, IndividuallyFixedCappedCrowdsale, CappedCrowdsale {
 
     using SafeMath for uint256;
 
@@ -33,6 +35,9 @@ contract AgonTokenCrowdSale is Ownable, CappedCrowdsale, IndividuallyFixedCapped
     // Agon beneficiary MultiSig wallet to collect fund, same as team vesting wallet
     address public constant AGON_BENEFICIARY_WALLET = AGON_TEAM_VESTING_WALLET;
 
+    // Soft cap of the token sale in ether. If token sale fails to hit soft cap, contributed ether will be refunded.
+    uint256 private constant SOFT_CAP_IN_WEI = 1000 ether;
+
     // Hard cap of the token sale in ether
     uint256 private constant HARD_CAP_IN_WEI = 7000 ether;
 
@@ -43,8 +48,9 @@ contract AgonTokenCrowdSale is Ownable, CappedCrowdsale, IndividuallyFixedCapped
     uint256 private constant RATE_ETH_AGN = 20000;
 
     function AgonTokenCrowdSale(uint256 _startTime, uint256 _endTime)
-        IndividuallyFixedCappedCrowdsale(AGON_INDIVIDUAL_CAP)
         CappedCrowdsale(HARD_CAP_IN_WEI)
+        IndividuallyFixedCappedCrowdsale(AGON_INDIVIDUAL_CAP)
+        RefundableCrowdsale(SOFT_CAP_IN_WEI)
         StandardTokenCrowdsale(_startTime, _endTime, RATE_ETH_AGN, AGON_BENEFICIARY_WALLET) public
     {
         token.transfer(AGON_TEAM_VESTING_WALLET, AGON_TEAM_VESTING_AMOUNT);
