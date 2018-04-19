@@ -588,7 +588,7 @@
         "id": 2,
         "nodeType": "ImportDirective",
         "scope": 66,
-        "sourceUnit": 917,
+        "sourceUnit": 1116,
         "src": "28:29:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -599,7 +599,7 @@
         "id": 3,
         "nodeType": "ImportDirective",
         "scope": 66,
-        "sourceUnit": 1589,
+        "sourceUnit": 1788,
         "src": "59:35:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -613,10 +613,10 @@
               "id": 4,
               "name": "PausableToken",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1588,
+              "referencedDeclaration": 1787,
               "src": "152:13:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_PausableToken_$1588",
+                "typeIdentifier": "t_contract$_PausableToken_$1787",
                 "typeString": "contract PausableToken"
               }
             },
@@ -626,14 +626,14 @@
           }
         ],
         "contractDependencies": [
-          972,
-          1068,
-          1139,
-          1182,
-          1214,
-          1486,
-          1588,
-          1834
+          1171,
+          1267,
+          1338,
+          1381,
+          1413,
+          1685,
+          1787,
+          2033
         ],
         "contractKind": "contract",
         "documentation": "@title Agon Token\r",
@@ -641,14 +641,14 @@
         "id": 65,
         "linearizedBaseContracts": [
           65,
-          1588,
-          1486,
-          972,
-          1834,
-          1139,
-          1068,
-          1182,
-          1214
+          1787,
+          1685,
+          1171,
+          2033,
+          1338,
+          1267,
+          1381,
+          1413
         ],
         "name": "AgonToken",
         "nodeType": "ContractDefinition",
@@ -837,7 +837,7 @@
                       "name": "totalSupply_",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 987,
+                      "referencedDeclaration": 1186,
                       "src": "573:12:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -885,7 +885,7 @@
                         "name": "balances",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 985,
+                        "referencedDeclaration": 1184,
                         "src": "612:8:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -901,7 +901,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2016,
+                          "referencedDeclaration": 2215,
                           "src": "621:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -988,7 +988,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2016,
+                          "referencedDeclaration": 2215,
                           "src": "678:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -1042,7 +1042,7 @@
                       "name": "Transfer",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1213,
+                      "referencedDeclaration": 1412,
                       "src": "664:8:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$__$",
@@ -1190,7 +1190,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2016,
+                        "referencedDeclaration": 2215,
                         "src": "813:3:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -1250,7 +1250,7 @@
                       "name": "transferOwnership",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 971,
+                      "referencedDeclaration": 1170,
                       "src": "834:17:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$returns$__$",
@@ -1443,7 +1443,7 @@
         "id": 2,
         "nodeType": "ImportDirective",
         "scope": 66,
-        "sourceUnit": 917,
+        "sourceUnit": 1116,
         "src": "28:29:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1454,7 +1454,7 @@
         "id": 3,
         "nodeType": "ImportDirective",
         "scope": 66,
-        "sourceUnit": 1589,
+        "sourceUnit": 1788,
         "src": "59:35:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1468,10 +1468,10 @@
               "id": 4,
               "name": "PausableToken",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 1588,
+              "referencedDeclaration": 1787,
               "src": "152:13:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_PausableToken_$1588",
+                "typeIdentifier": "t_contract$_PausableToken_$1787",
                 "typeString": "contract PausableToken"
               }
             },
@@ -1481,14 +1481,14 @@
           }
         ],
         "contractDependencies": [
-          972,
-          1068,
-          1139,
-          1182,
-          1214,
-          1486,
-          1588,
-          1834
+          1171,
+          1267,
+          1338,
+          1381,
+          1413,
+          1685,
+          1787,
+          2033
         ],
         "contractKind": "contract",
         "documentation": "@title Agon Token\r",
@@ -1496,14 +1496,14 @@
         "id": 65,
         "linearizedBaseContracts": [
           65,
-          1588,
-          1486,
-          972,
-          1834,
-          1139,
-          1068,
-          1182,
-          1214
+          1787,
+          1685,
+          1171,
+          2033,
+          1338,
+          1267,
+          1381,
+          1413
         ],
         "name": "AgonToken",
         "nodeType": "ContractDefinition",
@@ -1692,7 +1692,7 @@
                       "name": "totalSupply_",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 987,
+                      "referencedDeclaration": 1186,
                       "src": "573:12:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1740,7 +1740,7 @@
                         "name": "balances",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 985,
+                        "referencedDeclaration": 1184,
                         "src": "612:8:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_uint256_$",
@@ -1756,7 +1756,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2016,
+                          "referencedDeclaration": 2215,
                           "src": "621:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -1843,7 +1843,7 @@
                           "name": "msg",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2016,
+                          "referencedDeclaration": 2215,
                           "src": "678:3:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_magic_message",
@@ -1897,7 +1897,7 @@
                       "name": "Transfer",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 1213,
+                      "referencedDeclaration": 1412,
                       "src": "664:8:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_event_nonpayable$_t_address_$_t_address_$_t_uint256_$returns$__$",
@@ -2045,7 +2045,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2016,
+                        "referencedDeclaration": 2215,
                         "src": "813:3:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -2105,7 +2105,7 @@
                       "name": "transferOwnership",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 971,
+                      "referencedDeclaration": 1170,
                       "src": "834:17:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$returns$__$",
@@ -2277,5 +2277,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.0",
-  "updatedAt": "2018-04-16T09:51:46.836Z"
+  "updatedAt": "2018-04-19T08:05:29.255Z"
 }

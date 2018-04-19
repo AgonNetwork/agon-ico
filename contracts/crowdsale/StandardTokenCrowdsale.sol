@@ -106,13 +106,16 @@ contract StandardTokenCrowdsale is Ownable
         _preValidatePurchase(_beneficiary, weiAmount);
 
         // calculate token amount to be created
-        uint256 tokens = _getTokenAmount(weiAmount);
+        uint256 baseTokens = _getTokenAmount(weiAmount);
+        uint256 bonusTokens = _getBonusTokenAmount(weiAmount);
+
+        uint256 totalTokens = baseTokens.add(bonusTokens);
 
         // update state
         weiRaised = weiRaised.add(weiAmount);
 
-        _processPurchase(_beneficiary, tokens);
-        emit TokenPurchase(msg.sender, _beneficiary, weiAmount, tokens);
+        _processPurchase(_beneficiary, totalTokens);
+        emit TokenPurchase(msg.sender, _beneficiary, weiAmount, totalTokens);
 
         _updatePurchasingState(_beneficiary, weiAmount);
 
@@ -228,6 +231,16 @@ contract StandardTokenCrowdsale is Ownable
     function _getTokenAmount(uint256 _weiAmount) internal view returns (uint256)
     {
         return _weiAmount.mul(rate);
+    }
+
+    /**
+     * @dev Override to extend the way we determine bonus token amount.
+     * @return Number of bonus tokens that will be awarded for a purchase of _weiAmount
+     * @dev Agon changes
+     */
+    function _getBonusTokenAmount(uint256 /* _weiAmount */) internal view returns (uint256)
+    {
+        return 0;
     }
 
     /**
