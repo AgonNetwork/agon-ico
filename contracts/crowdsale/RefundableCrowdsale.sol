@@ -31,8 +31,8 @@ contract RefundableCrowdsale is StandardTokenCrowdsale {
     }
 
     /**
-    * @dev Investors can claim refunds here if crowdsale is unsuccessful
-    */
+     * @dev Investors can claim refunds here if crowdsale is unsuccessful
+     */
     function claimRefund() public {
         require(isFinalized);
         require(!goalReached());
@@ -41,16 +41,16 @@ contract RefundableCrowdsale is StandardTokenCrowdsale {
     }
 
     /**
-    * @dev Checks whether funding goal was reached.
-    * @return Whether funding goal was reached
-    */
+     * @dev Checks whether funding goal was reached.
+     * @return Whether funding goal was reached
+     */
     function goalReached() public view returns (bool) {
         return weiRaised >= goal;
     }
 
     /**
-    * @dev vault finalization task, called when owner calls finalize()
-    */
+     * @dev vault finalization task, called when owner calls finalize()
+     */
     function finalization() internal {
         if (goalReached()) {
             vault.close();
