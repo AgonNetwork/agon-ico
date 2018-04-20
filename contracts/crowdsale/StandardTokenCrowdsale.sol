@@ -2,7 +2,7 @@ pragma solidity ^0.4.21;
 
 import "../math/SafeMath.sol";
 import "../ownership/Ownable.sol";
-import "../token/StandardToken.sol";
+import "../token/PausableToken.sol";
 
 
 /**
@@ -26,7 +26,7 @@ contract StandardTokenCrowdsale is Ownable
     using SafeMath for uint256;
 
     // The token being sold
-    StandardToken public token;
+    PausableToken public token;
 
     // Address where funds are collected
     address public wallet;
@@ -114,7 +114,7 @@ contract StandardTokenCrowdsale is Ownable
         // update state
         weiRaised = weiRaised.add(weiAmount);
 
-        _processPurchase(_beneficiary, totalTokens);
+        _processPurchase(_beneficiary, totalTokens, bonusTokens);
         emit TokenPurchase(msg.sender, _beneficiary, weiAmount, totalTokens);
 
         _updatePurchasingState(_beneficiary, weiAmount);
@@ -172,8 +172,8 @@ contract StandardTokenCrowdsale is Ownable
     /**
      * @dev Create token contract. Override this method to create custom token for token sale. Based on Request Network code.
      */
-    function createTokenContract() internal returns(StandardToken) {
-        return new StandardToken();
+    function createTokenContract() internal returns(PausableToken) {
+        return new PausableToken();
     }
 
     /**
@@ -201,9 +201,11 @@ contract StandardTokenCrowdsale is Ownable
      * @dev Source of tokens. Override this method to modify the way in which the crowdsale ultimately gets and sends its tokens.
      * @param _beneficiary Address performing the token purchase
      * @param _tokenAmount Number of tokens to be emitted
+     * @param _tokenAmount Number of bonus tokens rewarded as crowd sale bonus, will be frozen for 60 days.
      */
-    function _deliverTokens(address _beneficiary, uint256 _tokenAmount) internal
+    function _deliverTokens(address _beneficiary, uint256 _tokenAmount, uint256 _bonusAmount) internal
     {
+        token.increaseFrozen(_beneficiary, _bonusAmount);
         token.transfer(_beneficiary, _tokenAmount);
     }
 
@@ -211,9 +213,10 @@ contract StandardTokenCrowdsale is Ownable
      * @dev Executed when a purchase has been validated and is ready to be executed. Not necessarily emits/sends tokens.
      * @param _beneficiary Address receiving the tokens
      * @param _tokenAmount Number of tokens to be purchased
+     * @param _tokenAmount Number of bonus tokens rewarded as crowd sale bonus, will be frozen for 60 days.
      */
-    function _processPurchase(address _beneficiary, uint256 _tokenAmount) internal {
-        _deliverTokens(_beneficiary, _tokenAmount);
+    function _processPurchase(address _beneficiary, uint256 _tokenAmount, uint256 _bonusAmount) internal {
+        _deliverTokens(_beneficiary, _tokenAmount, _bonusAmount);
     }
 
     /**
