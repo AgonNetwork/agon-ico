@@ -5,6 +5,7 @@ import "./crowdsale/CappedCrowdsale.sol";
 import "./crowdsale/IndividuallyFixedCappedCrowdsale.sol";
 import "./crowdsale/RefundableCrowdsale.sol";
 import "./crowdsale/StandardTokenCrowdsale.sol";
+import "./crowdsale/WhitelistedCrowdsale.sol";
 import "./ownership/Ownable.sol";
 
 /**
@@ -12,7 +13,7 @@ import "./ownership/Ownable.sol";
  * @dev Crowdsale with a fixed per-user caps. IndividuallyFixedCappedCrowdsale is developed based on
  * OpenZeppelin's IndividuallyCappedCrowdsale and Request Network's RequestTokenSale
  */
-contract AgonTokenCrowdSale is Ownable, StandardTokenCrowdsale, RefundableCrowdsale, IndividuallyFixedCappedCrowdsale, CappedCrowdsale {
+contract AgonTokenCrowdSale is Ownable, StandardTokenCrowdsale, WhitelistedCrowdsale, RefundableCrowdsale, IndividuallyFixedCappedCrowdsale, CappedCrowdsale {
 
     using SafeMath for uint256;
 
@@ -35,6 +36,8 @@ contract AgonTokenCrowdSale is Ownable, StandardTokenCrowdsale, RefundableCrowds
     // Agon bounty wallet and initial token amount distributed to bounty hunters! (5%)
     address public constant AGON_BOUNTY_WALLET = 0x789;
     uint256 public constant AGON_BOUNTY_AMOUNT = 12000000e18;
+
+    uint256 public AGON_CROWDSALE_TOKEN_AMOUNT = 0;
 
     // Agon beneficiary MultiSig wallet to collect fund, same as team vesting wallet
     address public constant AGON_BENEFICIARY_WALLET = AGON_TEAM_VESTING_WALLET;
@@ -94,21 +97,28 @@ contract AgonTokenCrowdSale is Ownable, StandardTokenCrowdsale, RefundableCrowds
 
         require(_endTime > phase3StartTime);
 
-        // Tokens distributed to founder team will be transfer after crowd sale
-        // token.transfer(AGON_TEAM_VESTING_WALLET, AGON_TEAM_VESTING_AMOUNT);
+        token.transfer(AGON_TEAM_VESTING_WALLET, AGON_TEAM_VESTING_AMOUNT);
 
         token.transfer(AGON_EARLY_INVESTOR_WALLET, AGON_EARLY_INVESTOR_AMOUNT);
 
+        token.transfer(AGON_AIRDROP_WALLET, AGON_AIRDROP_AMOUNT);
+
         token.transfer(AGON_BOUNTY_WALLET, AGON_BOUNTY_AMOUNT);
 
-        token.transfer(AGON_AIRDROP_WALLET, AGON_AIRDROP_AMOUNT);
+        AGON_CROWDSALE_TOKEN_AMOUNT = INITIAL_AGON_TOKEN_SUPPLY.sub(AGON_TEAM_VESTING_AMOUNT);
+        AGON_CROWDSALE_TOKEN_AMOUNT = AGON_CROWDSALE_TOKEN_AMOUNT.sub(AGON_EARLY_INVESTOR_AMOUNT);
+        AGON_CROWDSALE_TOKEN_AMOUNT = AGON_CROWDSALE_TOKEN_AMOUNT.sub(AGON_BOUNTY_AMOUNT);
+        AGON_CROWDSALE_TOKEN_AMOUNT = AGON_CROWDSALE_TOKEN_AMOUNT.sub(AGON_AIRDROP_AMOUNT);
+
+        // Transfer the rest of tokens available for public crowd sale to crowd sale address
+        token.transfer(this, AGON_CROWDSALE_TOKEN_AMOUNT);
     }
 
     /**
      * @dev Create Agon token contract (override createTokenContract of StandardTokenCrowdsale)
      * @return the StandardToken created
      */
-    function createTokenContract() internal returns(StandardToken) {
+    function createTokenContract() internal returns(PausableToken) {
         return new AgonToken(INITIAL_AGON_TOKEN_SUPPLY, startTime, endTime, AGON_TEAM_VESTING_WALLET);
     }
 
@@ -136,6 +146,20 @@ contract AgonTokenCrowdSale is Ownable, StandardTokenCrowdsale, RefundableCrowds
     }
 
     /**
+     * @dev Extend parent behavior requiring beneficiary to be in whitelist during pre-sale phase
+     * @param _beneficiary Token purchaser
+     * @param _weiAmount Amount of wei contributed
+     */
+    function _preValidatePurchase(address _beneficiary, uint256 _weiAmount) internal view {
+        super._preValidatePurchase(_beneficiary, _weiAmount);
+        // solium-disable-next-line security/no-block-members
+        if (now >= phase0StartTime && now <= phase1StartTime) {
+            require(isWhitelisted(_beneficiary));
+        }
+    }
+
+
+    /**
      * @dev Get current bonus rate. Override the base function from StandardTokenCrowdsale
      * @param _weiAmount Value in wei to be converted into bonus tokens
      * @return Number of bonus tokens that will be awarded for a purchase of _weiAmount
@@ -155,15 +179,5 @@ contract AgonTokenCrowdSale is Ownable, StandardTokenCrowdsale, RefundableCrowds
         require(hasEnded());
         uint256 tokensToBurn = token.balanceOf(this);
         token.burn(tokensToBurn);
-
-        // Also, a portion of tokens in founder team wallet must be burn to maintain the allocation ratio of 17.5%
-        uint256 tokensInCirculation = INITIAL_AGON_TOKEN_SUPPLY.sub(tokensToBurn);
-        uint256 newFounderTokens = tokensInCirculation.mul(175).div(1000);
-
-        if (AGON_TEAM_VESTING_AMOUNT > newFounderTokens) {
-            uint256 founderTokensToBurn = AGON_TEAM_VESTING_AMOUNT.sub(newFounderTokens);
-            token.burn(founderTokensToBurn);
-            token.transfer(AGON_TEAM_VESTING_WALLET, newFounderTokens);
-        }
     }
 }
